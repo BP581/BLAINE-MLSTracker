@@ -1,246 +1,40 @@
 {
   "version": 1,
-  "updated": "2026-06-08T17:01:54.323Z",
+  "updated": "2026-06-08T17:43:42.729Z",
   "dashboard": {
     "date": "2026-06-08",
     "bands": [
       {
-        "active": 18,
-        "pendings": 9,
-        "sales3mo": 23
-      },
-      {
-        "active": 8,
-        "pendings": 7,
-        "sales3mo": 18
-      },
-      {
-        "active": 8,
-        "pendings": 3,
-        "sales3mo": 10
-      },
-      {
-        "active": 6,
-        "pendings": 6,
-        "sales3mo": 5
-      },
-      {
-        "active": 8,
-        "pendings": 1,
-        "sales3mo": 1
-      },
-      {
-        "active": 4,
+        "active": 0,
         "pendings": 0,
-        "sales3mo": 5
+        "sales3mo": 0
       },
       {
-        "active": 3,
-        "pendings": 2,
-        "sales3mo": 1
+        "active": 0,
+        "pendings": 0,
+        "sales3mo": 0
       },
       {
-        "active": 2,
-        "pendings": 2,
-        "sales3mo": 4
+        "active": 0,
+        "pendings": 0,
+        "sales3mo": 0
       },
       {
-        "active": 1,
-        "pendings": 1,
-        "sales3mo": 2
+        "active": 0,
+        "pendings": 0,
+        "sales3mo": 0
       },
       {
-        "active": 13,
-        "pendings": 2,
-        "sales3mo": 1
+        "active": 0,
+        "pendings": 0,
+        "sales3mo": 0
       },
       {
-        "active": 1,
-        "pendings": 1,
-        "sales3mo": 3
+        "active": 0,
+        "pendings": 0,
+        "sales3mo": 0
       }
     ]
   },
-  "snapshots": [
-    {
-      "date": "2026-04-09",
-      "b0": {
-        "active": 33,
-        "pendings": 18,
-        "sales3mo": 35
-      },
-      "b1": {
-        "active": 6,
-        "pendings": 1,
-        "sales3mo": 9
-      },
-      "b2": {
-        "active": 6,
-        "pendings": 0,
-        "sales3mo": 1
-      }
-    },
-    {
-      "date": "2026-04-20",
-      "b0": {
-        "active": 34,
-        "pendings": 22,
-        "sales3mo": 39
-      },
-      "b1": {
-        "active": 8,
-        "pendings": 2,
-        "sales3mo": 10
-      },
-      "b2": {
-        "active": 6,
-        "pendings": 1,
-        "sales3mo": 2
-      }
-    },
-    {
-      "date": "2026-04-27",
-      "b0": {
-        "active": 39,
-        "pendings": 21,
-        "sales3mo": 40
-      },
-      "b1": {
-        "active": 6,
-        "pendings": 3,
-        "sales3mo": 9
-      },
-      "b2": {
-        "active": 6,
-        "pendings": 1,
-        "sales3mo": 1
-      }
-    },
-    {
-      "date": "2026-05-04",
-      "b0": {
-        "active": 35,
-        "pendings": 22,
-        "sales3mo": 46
-      },
-      "b1": {
-        "active": 7,
-        "pendings": 3,
-        "sales3mo": 8
-      },
-      "b2": {
-        "active": 8,
-        "pendings": 1,
-        "sales3mo": 2
-      }
-    },
-    {
-      "date": "2026-04-13",
-      "b0": {
-        "active": 37,
-        "pendings": 18,
-        "sales3mo": 36
-      },
-      "b1": {
-        "active": 6,
-        "pendings": 1,
-        "sales3mo": 9
-      },
-      "b2": {
-        "active": 6,
-        "pendings": 1,
-        "sales3mo": 1
-      }
-    },
-    {
-      "date": "2026-05-11",
-      "b0": {
-        "active": 39,
-        "pendings": 24,
-        "sales3mo": 50
-      },
-      "b1": {
-        "active": 7,
-        "pendings": 3,
-        "sales3mo": 10
-      },
-      "b2": {
-        "active": 10,
-        "pendings": 1,
-        "sales3mo": 2
-      }
-    },
-    {
-      "date": "2026-05-18",
-      "b0": {
-        "active": 39,
-        "pendings": 28,
-        "sales3mo": 51
-      },
-      "b1": {
-        "active": 10,
-        "pendings": 3,
-        "sales3mo": 10
-      },
-      "b2": {
-        "active": 13,
-        "pendings": 3,
-        "sales3mo": 3
-      }
-    },
-    {
-      "date": "2026-05-26",
-      "b0": {
-        "active": 37,
-        "pendings": 35,
-        "sales3mo": 54
-      },
-      "b1": {
-        "active": 11,
-        "pendings": 4,
-        "sales3mo": 10
-      },
-      "b2": {
-        "active": 13,
-        "pendings": 2,
-        "sales3mo": 4
-      }
-    },
-    {
-      "date": "2026-06-01",
-      "b0": {
-        "active": 42,
-        "pendings": 30,
-        "sales3mo": 57
-      },
-      "b1": {
-        "active": 9,
-        "pendings": 6,
-        "sales3mo": 10
-      },
-      "b2": {
-        "active": 12,
-        "pendings": 2,
-        "sales3mo": 4
-      }
-    },
-    {
-      "date": "2026-06-08",
-      "b0": {
-        "active": 48,
-        "pendings": 26,
-        "sales3mo": 57
-      },
-      "b1": {
-        "active": 10,
-        "pendings": 5,
-        "sales3mo": 12
-      },
-      "b2": {
-        "active": 14,
-        "pendings": 3,
-        "sales3mo": 4
-      }
-    }
-  ]
+  "snapshots": []
 }
