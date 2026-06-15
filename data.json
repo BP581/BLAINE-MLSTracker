@@ -1,22 +1,22 @@
 {
   "version": 1,
-  "updated": "2026-06-15T16:32:40.178Z",
+  "updated": "2026-06-15T16:33:41.969Z",
   "dashboard": {
-    "date": "2026-06-15",
+    "date": "2026-06-08",
     "bands": [
       {
         "active": 5,
-        "pendings": 2,
-        "sales3mo": 3
+        "pendings": 4,
+        "sales3mo": 2
       },
       {
-        "active": 3,
+        "active": 2,
         "pendings": 0,
-        "sales3mo": 7
+        "sales3mo": 8
       },
       {
         "active": 9,
-        "pendings": 3,
+        "pendings": 5,
         "sales3mo": 6
       },
       {
