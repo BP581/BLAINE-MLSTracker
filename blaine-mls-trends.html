@@ -200,6 +200,7 @@ async function pushToGitHub() {
     // Cache-bust the SHA fetch to avoid stale 409s
     const getUrl = `https://api.github.com/repos/${s.repo}/contents/${DATA_URL}?ref=${encodeURIComponent(s.branch||'main')}&t=${Date.now()}`;
     let sha = null;
+    let serverData = null;
     const getResp = await fetch(getUrl, {
       cache: 'no-store',
       headers: {
@@ -211,11 +212,34 @@ async function pushToGitHub() {
     if (getResp.ok) {
       const meta = await getResp.json();
       sha = meta.sha;
+      try {
+        const decoded = decodeURIComponent(escape(atob(meta.content.replace(/\n/g, ''))));
+        serverData = JSON.parse(decoded);
+      } catch(e) {
+        console.warn('Could not decode server data.json, falling back to local DATA', e);
+      }
     } else if (getResp.status !== 404) {
       const body = await getResp.text();
       return { ok: false, error: `GET failed (${getResp.status}): ${body.slice(0,200)}`, status: getResp.status };
     }
-    const content = JSON.stringify(DATA, null, 2) + '\n';
+
+    // Build merged payload: trends only owns snapshots[]. Always preserve the
+    // server's dashboard so the trends page can never overwrite it with stale data.
+    let toPush;
+    if (serverData) {
+      toPush = {
+        version: DATA.version || serverData.version || 1,
+        updated: new Date().toISOString(),
+        dashboard: serverData.dashboard,   // <-- preserve server's dashboard
+        snapshots: DATA.snapshots          // <-- our updated snapshots
+      };
+      // Keep local DATA in sync with what we pushed
+      DATA.dashboard = serverData.dashboard;
+    } else {
+      toPush = DATA;
+    }
+
+    const content = JSON.stringify(toPush, null, 2) + '\n';
     const b64 = btoa(unescape(encodeURIComponent(content)));
     const putBody = {
       message: `Add trend snapshot for ${DATA.snapshots[DATA.snapshots.length-1].date}`,
