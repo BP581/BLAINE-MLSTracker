@@ -405,10 +405,11 @@ async function pushToGitHub() {
 
   // Try once. If we hit a 409 stale-SHA error, refetch and retry once more.
   const attempt = async () => {
-    // 1. Get the current file SHA (required for updates).
+    // 1. Get the current file SHA AND content (we need both to merge safely).
     // Cache-bust to avoid GitHub's CDN serving a stale SHA.
     const getUrl = `https://api.github.com/repos/${s.repo}/contents/${DATA_URL}?ref=${encodeURIComponent(s.branch)}&t=${Date.now()}`;
     let sha = null;
+    let serverData = null;
     const getResp = await fetch(getUrl, {
       cache: 'no-store',
       headers: {
@@ -420,16 +421,49 @@ async function pushToGitHub() {
     if (getResp.ok) {
       const meta = await getResp.json();
       sha = meta.sha;
+      // Decode the server's current data.json so we can merge into it
+      try {
+        const decoded = decodeURIComponent(escape(atob(meta.content.replace(/\n/g, ''))));
+        serverData = JSON.parse(decoded);
+      } catch(e) {
+        console.warn('Could not decode server data.json, falling back to local DATA', e);
+      }
     } else if (getResp.status !== 404) {
       const body = await getResp.text();
       return { ok: false, error: `GET failed (${getResp.status}): ${body.slice(0,200)}`, status: getResp.status };
     }
 
-    // 2. PUT the new content (base64-encoded)
-    const content = JSON.stringify(DATA, null, 2) + '\n';
+    // 2. Build merged payload:
+    //    - Take server's snapshots as the base (so we don't clobber trends pushes)
+    //    - Replace dashboard with ours
+    //    - Upsert our local snapshot for the current dashboard date
+    //    - If server fetch failed (404 on first ever push), just use our DATA
+    let toPush;
+    if (serverData) {
+      const mergedSnapshots = Array.isArray(serverData.snapshots) ? [...serverData.snapshots] : [];
+      // Find our local snapshot for today's dashboard date
+      const localSnap = (DATA.snapshots || []).find(sn => sn.date === DATA.dashboard.date);
+      if (localSnap) {
+        const idx = mergedSnapshots.findIndex(sn => sn.date === localSnap.date);
+        if (idx >= 0) mergedSnapshots[idx] = localSnap;
+        else mergedSnapshots.push(localSnap);
+      }
+      toPush = {
+        version: DATA.version || serverData.version || 1,
+        updated: new Date().toISOString(),
+        dashboard: DATA.dashboard,
+        snapshots: mergedSnapshots
+      };
+      // Keep our in-memory DATA in sync with what we just pushed
+      DATA.snapshots = mergedSnapshots;
+    } else {
+      toPush = DATA;
+    }
+
+    const content = JSON.stringify(toPush, null, 2) + '\n';
     const b64 = btoa(unescape(encodeURIComponent(content)));
     const putBody = {
-      message: `Update data.json — snapshot ${DATA.dashboard.date}`,
+      message: `Update dashboard — snapshot ${DATA.dashboard.date}`,
       content: b64,
       branch: s.branch
     };
