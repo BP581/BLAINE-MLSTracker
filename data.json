@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-15T17:15:13.297Z",
+  "updated": "2026-06-15T17:15:25.993Z",
   "dashboard": {
     "date": "2026-06-08",
     "bands": [
@@ -38,19 +38,19 @@
   },
   "snapshots": [
     {
-      "date": "2026-06-08",
+      "date": "2026-06-03",
       "b0": {
-        "active": 7,
-        "pendings": 4,
+        "active": 8,
+        "pendings": 3,
         "sales3mo": 10
       },
       "b1": {
-        "active": 11,
+        "active": 10,
         "pendings": 6,
-        "sales3mo": 7
+        "sales3mo": 6
       },
       "b2": {
-        "active": 4,
+        "active": 2,
         "pendings": 1,
         "sales3mo": 1
       }
