@@ -76,6 +76,18 @@ footer { border-top: 1px solid var(--border); padding: 1rem 2.5rem; font-size: 0
   header, main, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
   .charts-grid { grid-template-columns: 1fr; }
 }
+
+/* ── DATE RANGE FILTER ── */
+.date-filter { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding: 0.85rem 1.1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; font-size: 0.8rem; }
+.date-filter label { color: var(--text3); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+.date-filter input[type=date] { padding: 0.35rem 0.65rem; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Inter', sans-serif; font-size: 0.8rem; background: var(--surface); color: var(--text); transition: border-color 0.15s; }
+.date-filter input[type=date]:focus { outline: none; border-color: var(--accent); }
+.filter-sep { color: var(--text3); }
+.preset-btns { display: flex; gap: 0.4rem; margin-left: 0.5rem; flex-wrap: wrap; }
+.preset-btn { padding: 0.3rem 0.7rem; border: 1.5px solid var(--border); border-radius: 6px; font-size: 0.72rem; font-weight: 500; font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text2); cursor: pointer; transition: background 0.12s, border-color 0.12s, color 0.12s; }
+.preset-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.preset-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); font-weight: 600; }
+.filter-count { margin-left: auto; font-size: 0.72rem; color: var(--text3); white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -113,6 +125,22 @@ footer { border-top: 1px solid var(--border); padding: 1rem 2.5rem; font-size: 0
     <div class="legend-item"><div class="legend-dot" style="background:var(--c1)"></div>$400K – $600K</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--c2)"></div>$600K – $800K</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--c3)"></div>$800K – $1M</div>
+  </div>
+
+
+  <div class="date-filter" id="dateFilter">
+    <label>From</label>
+    <input type="date" id="filterFrom" onchange="applyFilter()">
+    <span class="filter-sep">–</span>
+    <label>To</label>
+    <input type="date" id="filterTo" onchange="applyFilter()">
+    <div class="preset-btns">
+      <button class="preset-btn active" id="preset-all" onclick="setPreset('all')">All</button>
+      <button class="preset-btn" id="preset-12mo" onclick="setPreset('12mo')">12 mo</button>
+      <button class="preset-btn" id="preset-6mo" onclick="setPreset('6mo')">6 mo</button>
+      <button class="preset-btn" id="preset-3mo" onclick="setPreset('3mo')">3 mo</button>
+    </div>
+    <span class="filter-count" id="filterCount"></span>
   </div>
 
   <div class="charts-grid">
@@ -374,10 +402,65 @@ function renderTable(snaps) {
   document.getElementById('footerTs').textContent = 'Last updated: ' + new Date().toLocaleString();
 }
 
-function renderAll(snaps) {
-  const sorted = [...snaps].sort((a,b) => a.date.localeCompare(b.date));
+// ── DATE RANGE FILTER ──────────────────────────────────
+let allSnaps = [];
+
+function filterSnaps(snaps) {
+  const fromVal = document.getElementById('filterFrom').value;
+  const toVal   = document.getElementById('filterTo').value;
+  return snaps.filter(s => {
+    if (fromVal && s.date < fromVal) return false;
+    if (toVal   && s.date > toVal)   return false;
+    return true;
+  });
+}
+
+function applyFilter() {
+  // Clear active state on preset buttons when dates are changed manually
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('preset-all').classList.add('active');
+
+  const filtered = filterSnaps(allSnaps);
+  const sorted = [...filtered].sort((a,b) => a.date.localeCompare(b.date));
+  const total = allSnaps.length;
+  const shown = filtered.length;
+  document.getElementById('filterCount').textContent =
+    shown === total ? `${total} snapshot${total===1?'':'s'}` : `${shown} of ${total} snapshot${total===1?'':'s'}`;
   initCharts(sorted);
-  renderTable(snaps);
+  renderTable(filtered);
+}
+
+function setPreset(preset) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('preset-' + preset).classList.add('active');
+
+  const today = new Date();
+  const toStr = today.toISOString().slice(0,10);
+  let fromStr = '';
+  if (preset !== 'all') {
+    const months = preset === '3mo' ? 3 : preset === '6mo' ? 6 : 12;
+    const from = new Date(today);
+    from.setMonth(from.getMonth() - months);
+    fromStr = from.toISOString().slice(0,10);
+  }
+  document.getElementById('filterFrom').value = fromStr;
+  document.getElementById('filterTo').value = '';
+  applyFilter();
+}
+
+function renderAll(snaps) {
+  allSnaps = snaps;
+  // Initialize date pickers with data bounds on first load
+  if (snaps.length > 0) {
+    const dates = snaps.map(s => s.date).sort();
+    const fromInput = document.getElementById('filterFrom');
+    const toInput = document.getElementById('filterTo');
+    fromInput.min = dates[0];
+    toInput.min = dates[0];
+    fromInput.max = dates[dates.length-1];
+    toInput.max = dates[dates.length-1];
+  }
+  applyFilter();
 }
 
 // ── CSV PARSER ─────────────────────────────────────────
