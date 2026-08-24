@@ -1,26 +1,26 @@
 {
   "version": 1,
-  "updated": "2026-08-17T18:29:08.327Z",
+  "updated": "2026-08-24T17:32:34.535Z",
   "dashboard": {
-    "date": "2026-08-17",
+    "date": "2026-08-24",
     "bands": [
       {
-        "active": 8,
+        "active": 9,
         "pendings": 0,
         "sales3mo": 5
       },
       {
         "active": 1,
-        "pendings": 4,
-        "sales3mo": 4
+        "pendings": 2,
+        "sales3mo": 5
       },
       {
-        "active": 11,
-        "pendings": 3,
-        "sales3mo": 6
+        "active": 12,
+        "pendings": 1,
+        "sales3mo": 8
       },
       {
-        "active": 2,
+        "active": 3,
         "pendings": 0,
         "sales3mo": 2
       },
@@ -246,6 +246,24 @@
         "active": 13,
         "pendings": 3,
         "sales3mo": 8
+      },
+      "b2": {
+        "active": 3,
+        "pendings": 0,
+        "sales3mo": 0
+      }
+    },
+    {
+      "date": "2026-08-24",
+      "b0": {
+        "active": 10,
+        "pendings": 2,
+        "sales3mo": 10
+      },
+      "b1": {
+        "active": 15,
+        "pendings": 1,
+        "sales3mo": 10
       },
       "b2": {
         "active": 3,
